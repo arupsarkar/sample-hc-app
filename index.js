@@ -20,7 +20,7 @@ app.post('/submit', function(req, res, next) {
     pool.connect(function (err, conn, done){
         // watch for any connect issues
         if (err) console.log(err);
-        conn.query('INSERT INTO salesforce.Drink_Order__c (Flavor__c, Size__c, Price__) VALUES ($1, $2, $3)',
+        conn.query('INSERT INTO salesforce.Drink_Order__c (Flavor__c, Size__c, Price__c) VALUES ($1, $2, $3)',
             [req.body.flavor.trim(), req.body.size.trim(), req.body.price.trim()],
             function(err, result) {
                 done();
