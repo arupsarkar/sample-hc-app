@@ -12,6 +12,26 @@ app.get('/', function(req, res, next) {
     res.send('hello world');
 });
 
+app.post('/submit', function(req, res, next) {
+    pg.connect(process.env.DATABASE_URL, function (err, conn, done){
+        // watch for any connect issues
+        if (err) console.log(err);
+        conn.query('INSERT INTO salesforce.Drink_Order__c (Flavor__c, Size__c, Price__) VALUES ($1, $2, $3)',
+            [req.body.flavor.trim(), req.body.size.trim(), req.body.price.trim()],
+            function(err, result) {
+                done();
+                if (err) {
+                    res.status(400).json({error: err.message});
+                } else {
+                    // this will still cause jquery to display 'Record updated!'
+                    // eventhough it was inserted
+                    res.json(result);
+                }
+            }
+        );
+    })
+});
+
 app.set('port', process.env.PORT || port);
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
