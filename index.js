@@ -1,11 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const pg = require('pg');
-
+const connectionString = process.env.DATABASE_URL;
 
 const app = express();
 const port = 3000;
 
+
+const pool = new pg.Pool({
+    connectionString: connectionString,
+});
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.get('/', function(req, res, next) {
@@ -13,7 +17,7 @@ app.get('/', function(req, res, next) {
 });
 
 app.post('/submit', function(req, res, next) {
-    pg.connect(process.env.DATABASE_URL, function (err, conn, done){
+    pool.connect(function (err, conn, done){
         // watch for any connect issues
         if (err) console.log(err);
         conn.query('INSERT INTO salesforce.Drink_Order__c (Flavor__c, Size__c, Price__) VALUES ($1, $2, $3)',
