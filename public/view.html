@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <style>
+        body {
+            padding-top: 60px;
+        }
+    </style>
+
+    <script>
+        $(function() {
+            $("#lemonadeOrderForm").submit(function(event) {
+                event.preventDefault();
+
+                var errorMessage = $("#errorMessage");
+                var error = $("#error");
+                error.hide();
+
+                $("#message").hide();
+                $.ajax({ url: '/orders',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    data: JSON.stringify(DATA),
+                    success: function(res) {
+                        console.log(res)
+                    }
+                } )
+
+                // var flavor = $("#flavor").val();
+                // var size = $("#size").val();
+                // var price = $("#price").val();
+                //
+                // if (flavor.length == 0 || size.length == 0 || price.length == 0) {
+                //     errorMessage.text("All of the fields are required.");
+                //     error.show();
+                // }
+                // else {
+                //     $.ajax({
+                //         url: event.target.action,
+                //         method: event.target.method,
+                //         data: JSON.stringify({
+                //             flavor: flavor,
+                //             size: size,
+                //             price: price
+                //         }),
+                //         contentType: "application/json; charset=utf-8",
+                //         dataType: "json",
+                //         success: function(data) {
+                //             $("#flavor").val("");
+                //             $("#size").val("");
+                //             $("#price").val("");
+                //             $("#messageMessage").text("Order created!");
+                //             $("#message").show();
+                //         },
+                //         error: function(err) {
+                //             errorMessage.text(err.responseJSON.error);
+                //             error.show();
+                //         }
+                //     })
+                // }
+            });
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

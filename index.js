@@ -16,6 +16,28 @@ app.get('/', function(req, res, next) {
     res.send('hello world');
 });
 
+const query = {
+    name: 'get-orders',
+    text: 'SELECT Flavor__c, Size__c, Price__c FROM Drink_Order__c',
+};
+
+app.get('/orders', function(req, res, next) {
+    pool.connect(function (err, conn, done){
+        // watch for any connect issues
+        if (err) console.log(err);
+        conn.query(query, function(err, result) {
+                done();
+                if (err) {
+                    res.status(400).json({error: err.message});
+                } else {
+                    console.log(JSON.stringify(result));
+                    res.json(result);
+                }
+            }
+        );
+    })
+});
+
 app.post('/submit', function(req, res, next) {
     pool.connect(function (err, conn, done){
         // watch for any connect issues
